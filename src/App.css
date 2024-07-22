@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset some default styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Flex container to center content */
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  text-align: center;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.text-white {
+  color: white;
+}
+
+.content h1 {
+  font-size: 3rem;
+  font-weight: 700; /* Bold font */
+  margin: 0;
+  padding: 0;
+}
+
+.content h2 {
+  font-size: 1.5rem;
+  font-weight: 300; /* Light font */
+  margin: 0;
+  padding: 0;
+}
