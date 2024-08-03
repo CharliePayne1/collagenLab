@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-
 import Button from './Button';
 
 const CheckoutForm = ({
@@ -12,50 +11,56 @@ const CheckoutForm = ({
   const elements = useElements();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch the client secret from the server
+    fetch('http://localhost:5252/create-payment-intent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ price }),
+    })
+      .then(response => response.json())
+      .then(data => setClientSecret(data.client_secret))
+      .catch(error => setErrorMessage(error.message));
+  }, [price]);
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
     event.preventDefault();
 
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
+    if (!stripe || !elements || !clientSecret) {
       return;
     }
 
     const { error } = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
         return_url: 'http://localhost:4242/success.html',
       },
+      clientSecret,
     });
 
     if (error) {
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Show error to your customer (for example, payment
-      // details incomplete)
       setErrorMessage(error.message ?? null);
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <Button text={
-        `Pay ${new Intl.NumberFormat('en-GB', {
+      <Button 
+        text={`Pay ${new Intl.NumberFormat('en-GB', {
           style: 'currency',
           currency: 'GBP'
-        }).format(price)}`
-      } onClick={handleSubmit} disabled={!stripe} />
+        }).format(price)}`} 
+        onClick={handleSubmit} 
+        disabled={!stripe || !clientSecret} 
+      />
       {errorMessage && <div className='text-red'>{errorMessage}</div>}
     </form>
-  )
+  );
 };
 
 export default CheckoutForm;
