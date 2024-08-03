@@ -11,7 +11,11 @@ const initStripe = async () => {
     return loadStripe(publishableKey);
   };
 
-const Checkout = () => {
+const Checkout = ({
+  price
+}: {
+  price: number;
+}) => {
     const stripePromise = initStripe();
     const [clientSecretSettings, setClientSecretSettings] = useState({
       clientSecret: "",
@@ -42,7 +46,7 @@ const Checkout = () => {
                 appearance: { theme: "stripe" },
               }}
             >
-              <CheckoutForm />
+              <CheckoutForm price={price}/>
             </Elements>
           )}
         </div>

@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 
-const CheckoutForm = () => {
+import Button from './Button';
+
+const CheckoutForm = ({
+  price
+}: {
+  price: number;
+}) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -18,7 +24,7 @@ const CheckoutForm = () => {
       return;
     }
 
-    const {error} = await stripe.confirmPayment({
+    const { error } = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
@@ -30,7 +36,7 @@ const CheckoutForm = () => {
       // This point will only be reached if there is an immediate error when
       // confirming the payment. Show error to your customer (for example, payment
       // details incomplete)
-    setErrorMessage(error.message ?? null);
+      setErrorMessage(error.message ?? null);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
@@ -41,9 +47,13 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button disabled={!stripe}>Submit</button>
-      {/* Show error message to your customers */}
-      {errorMessage && <div>{errorMessage}</div>}
+      <Button text={
+        `Pay ${new Intl.NumberFormat('en-GB', {
+          style: 'currency',
+          currency: 'GBP'
+        }).format(price)}`
+      } onClick={handleSubmit} disabled={!stripe} />
+      {errorMessage && <div className='text-red'>{errorMessage}</div>}
     </form>
   )
 };
