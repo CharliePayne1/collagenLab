@@ -5,8 +5,10 @@ export const Home = () => {
         <>
             <div className="bg-black flex-container text-white">
                 <div className="content">
-                    <h1>Collagen Lab</h1>
-                    <h2>COMING SOON</h2>
+                    <div className="mb-8">
+                        <h1>Collagen Lab</h1>
+                        <h2>COMING SOON</h2>
+                    </div>
                     <EmailSignup />
                 </div>
             </div>

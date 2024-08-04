@@ -36,7 +36,7 @@ const EmailSignup = () => {
                     setEmail(e.target.value)
                 }}
                 placeholder="Enter your email"
-                className='bg-black'
+                className='bg-black mr-4'
                 required
             />
             <Button
