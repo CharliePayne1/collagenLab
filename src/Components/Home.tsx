@@ -1,3 +1,5 @@
+import EmailSignup from "./EmailSignup";
+
 export const Home = () => {
     return (
         <>
@@ -5,6 +7,7 @@ export const Home = () => {
                 <div className="content">
                     <h1>Collagen Lab</h1>
                     <h2>COMING SOON</h2>
+                    <EmailSignup />
                 </div>
             </div>
         </>
