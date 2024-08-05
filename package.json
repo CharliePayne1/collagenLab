@@ -8,7 +8,7 @@
     "dev": "concurrently --kill-others-on-fail \"vite\" \"nodemon server.cjs\"",
     "client": "vite",
     "server": "nodemon server.cjs",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --base=/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
