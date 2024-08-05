@@ -1,27 +1,39 @@
 import { useState } from 'react';
 import Button from './Button';
+import axios from "axios";
 
 const EmailSignup = () => {
     const [email, setEmail] = useState('');
 
-    const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    async function handleSubmit(event: { preventDefault: () => void; }) {
         event.preventDefault();
 
-        const response = await fetch('/api/subscribe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-        });
+        try {
+            const response = await axios.post("/api/subscribe", { email });
 
+            if (response.status === 200) {
+                // Successful subscription
+                setEmail('');
+            } else {
+                alert('Unexpected error. Please try again.');
+                console.error("Subscription failed:", response.data.error);
+            }
 
-        if (!response.ok) {
-            alert('Failed to subscribe. Please try again.');
-            console.log(response);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response && error.response.status === 400) {
+                    alert("Email is required.");
+                } else {
+                    alert("Failed to subscribe. Please try again.");
+                    console.error("Subscription error:", error.response?.data?.error || error.message);
+                }
+            } else {
+                // Handle unexpected errors
+                alert("An unexpected error occurred. Please try again.");
+                console.error("Subscription error:", error);
+            }
         }
-        setEmail('');
-    };
+    }
 
     return (
         <form onSubmit={handleSubmit}>
