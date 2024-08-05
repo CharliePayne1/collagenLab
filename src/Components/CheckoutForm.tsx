@@ -15,7 +15,7 @@ const CheckoutForm = ({
 
   useEffect(() => {
     // Fetch the client secret from the server
-    fetch('http://localhost:5252/create-payment-intent', {
+    fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

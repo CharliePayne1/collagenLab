@@ -16,13 +16,10 @@ const EmailSignup = () => {
         });
 
 
-        if (response.ok) {
-            alert('Thanks for subscribing!');
-        } else {
-            console.log(response);
+        if (!response.ok) {
             alert('Failed to subscribe. Please try again.');
+            console.log(response);
         }
-
         setEmail('');
     };
 

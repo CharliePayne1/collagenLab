@@ -1,24 +1,25 @@
 require("dotenv").config();
-const fastify = require("fastify")({ logger: true });
-const cors = require('@fastify/cors');
 
-fastify.register(cors, {
-  origin: true,
-});
-
+const express = require("express");
+const cors = require("cors");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const mailchimp = require("@mailchimp/mailchimp_marketing");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
 
 mailchimp.setConfig({
   apiKey: process.env.MAILCHIMP_API_KEY,
   server: process.env.MAILCHIMP_SERVER_PREFIX,
 });
 
-fastify.get("/publishable-key", (req, reply) => {
-  reply.send({ publishable_key: process.env.STRIPE_PUBLISHABLE_KEY });
+app.get("/publishable-key", (req, res) => {
+  res.send({ publishable_key: process.env.STRIPE_PUBLISHABLE_KEY });
 });
 
-fastify.post("/create-payment-intent", async (req, reply) => {
+app.post("/create-payment-intent", async (req, res) => {
   const { price } = req.body;
   const amount = Math.round(price * 100);
 
@@ -29,43 +30,39 @@ fastify.post("/create-payment-intent", async (req, reply) => {
       payment_method_types: ["card"],
     });
 
-    reply.send({ client_secret: paymentIntent.client_secret });
+    res.send({ client_secret: paymentIntent.client_secret });
   } catch (error) {
-    reply.status(500).send({ error: error.message });
+    res.status(500).send({ error: error.message });
   }
 });
 
-fastify.post("/subscribe", async (req, reply) => {
+app.post("/subscribe", async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    fastify.log.error("No email provided");
-    return reply.status(400).send({ error: "Email is required" });
+    console.error("No email provided");
+    return res.status(400).send({ error: "Email is required" });
   }
 
   try {
-    fastify.log.info(`Subscribing email: ${email}`);
-    const response = await mailchimp.lists.addListMember(process.env.MAILCHIMP_AUDIENCE_ID, {
-      email_address: email,
-      status: "subscribed",
-    });
+    console.info(`Subscribing email: ${email}`);
+    const response = await mailchimp.lists.addListMember(
+      process.env.MAILCHIMP_AUDIENCE_ID,
+      {
+        email_address: email,
+        status: "subscribed",
+      }
+    );
 
-    fastify.log.info("Subscription successful");
-    reply.status(200).send({ message: "Subscription successful" });
+    console.info("Subscription successful");
+    res.status(200).send({ message: "Subscription successful" });
   } catch (error) {
-    fastify.log.error("Error subscribing email:", error);
-    reply.status(500).send({ error: "Internal server error" });
+    console.error("Error subscribing email:", error);
+    res.status(500).send({ error: "Internal server error" });
   }
 });
 
-const start = async () => {
-  try {
-    await fastify.listen({ port: 5252 });
-    console.log("Server listening on port 5252");
-  } catch (err) {
-    fastify.log.error("Error starting server:", err);
-    process.exit(1);
-  }
-};
-
-start();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
