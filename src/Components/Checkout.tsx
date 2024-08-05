@@ -7,7 +7,7 @@ import CheckoutForm from './CheckoutForm.jsx';
 async function initStripe() {
   try {
     const response = await axios.get("/api/publishable-key");
-    const publishableKey = response.data.publishable_key; // Note: publishableKey, not publishable_key
+    const publishableKey = response.data.publishableKey;
 
     if (!publishableKey) {
       throw new Error("Publishable key not found in the response.");
