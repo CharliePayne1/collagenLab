@@ -11,11 +11,11 @@ function ProductDetails() {
     const product = products.find(p => p.id === Number(productId));
 
     if (!product) {
-        return <div className="bg-black min-h-screen text-white flex items-center justify-center">Product not found</div>;
+        return <div className="bg-dark-green min-h-screen text-beige flex items-center justify-center">Product not found</div>;
     }
 
     return (
-        <div className="bg-black min-h-screen p-6 text-white">
+        <div className="bg-dark-green min-h-screen p-6 text-beige">
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg text-black">
                 <div>
                     <img src={product.image} alt={product.name} className="w-full h-64 object-cover rounded-lg mb-4" />

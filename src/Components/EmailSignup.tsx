@@ -37,15 +37,15 @@ const EmailSignup = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>Want to know when we launch?</div>
+            <div className='text-serif text-peach text-md'>Want to know when we launch?</div>
             <input
                 type="email"
                 value={email}
                 onChange={(e) => {
                     setEmail(e.target.value)
                 }}
-                placeholder="Enter your email"
-                className='bg-black mr-4'
+                placeholder="email address"
+                className='bg-dark-green mr-4 text-beige p-2 rounded outline-2 border-beige'
                 required
             />
             <Button

@@ -5,8 +5,8 @@ import Checkout from '../src/Components/Checkout';
 function CheckoutPage () {
   return (
     <>
-      <div className='bg-black flex-container'>
-        <div className='text-white content'>
+      <div className='bg-dark-green flex-container'>
+        <div className='text-beige content'>
           <Checkout />
         </div>
       </div>

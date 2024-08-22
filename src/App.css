@@ -8,7 +8,11 @@ body, html {
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Manier';
+}
+
+.text-serif {
+  font-family: 'Serif';
 }
 
 /* Flex container to center content */
@@ -20,12 +24,33 @@ body, html {
   text-align: center;
 }
 
-.bg-black {
-  background-color: black;
+.bg-dark-green {
+  background-color: #1A2A24;
 }
 
-.text-white {
-  color: white;
+.bg-light-green {
+  background-color: #3D5A4C;
+}
+
+.bg-beige {
+  background-color: #F3F2E0;
+}
+
+.text-dark-green {
+  color: #1A2A24;
+}
+
+.text-beige {
+  color: #F3F2E0;
+}
+
+.text-peach {
+  color: #F5B895;
+}
+
+.border-beige {
+  border: 1px solid #F3F2E0;
+  border-color: #F3F2E0;
 }
 
 .content h1 {

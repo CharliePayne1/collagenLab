@@ -11,8 +11,8 @@ const convertToCurrency = (amount: number) => {
 
 function Products() {
     return (
-        <div className='bg-black p-6'>
-            <h1 className='text-white text-3xl mb-6'>Collagen Powders</h1>
+        <div className='bg-dark-green p-6'>
+            <h1 className='text-beige text-3xl mb-6'>Collagen Powders</h1>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                 {products.map((product: {
                     id: number;

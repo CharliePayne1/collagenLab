@@ -2,7 +2,7 @@ const Button = ({ text, onClick, disabled }: { text: string, onClick: (event: { 
     return (
         <button
             disabled={disabled}
-            className=" mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="mt-4 bg-beige text-dark-green font-bold py-2 px-4 rounded cursor-pointer hover:opacity-80"
             onClick={onClick}
         >{text}</button>
     );
